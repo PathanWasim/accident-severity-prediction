@@ -1,256 +1,165 @@
-# Enhanced Accident Severity Prediction System
+# Accident Severity Prediction System
 
-A comprehensive, production-ready accident severity prediction system built with modern technologies including FastAPI, React, XGBoost, and Docker.
+A machine learning system that predicts the severity of road accidents using various environmental and situational factors. Originally built with R Shiny, now modernized with FastAPI and React for better performance and scalability.
 
-## 🚀 Features
+## Overview
 
-### Core Functionality
-- **Advanced ML Prediction**: XGBoost-based accident severity prediction (Minor/Moderate/Severe)
-- **Real-time Predictions**: WebSocket support for live predictions
-- **Batch Processing**: Handle multiple predictions simultaneously
-- **Model Monitoring**: Track model performance and drift
+This system analyzes multiple factors including weather conditions, road type, driver characteristics, and vehicle information to predict whether an accident will be Minor, Moderate, or Severe. The prediction model uses XGBoost algorithm trained on historical accident data.
 
-### Modern UI/UX
-- **React + TypeScript**: Modern, responsive frontend
-- **Chakra UI**: Beautiful, accessible component library
-- **Real-time Updates**: Live data updates via WebSocket
-- **Dark/Light Mode**: User preference support
-- **Mobile Responsive**: Works on all devices
+## Features
 
-### Backend Excellence
-- **FastAPI**: High-performance async API with automatic documentation
-- **PostgreSQL**: Robust data storage
-- **Redis**: Caching and session management
-- **MLflow**: Model versioning and experiment tracking
-- **Comprehensive Logging**: Structured logging with monitoring
+- **Web Interface**: Clean, responsive interface for making predictions
+- **REST API**: Programmatic access for integration with other systems
+- **Real-time Predictions**: Instant results via WebSocket connections
+- **Batch Processing**: Handle multiple predictions at once
+- **Analytics Dashboard**: Visualize trends and patterns in accident data
+- **Model Monitoring**: Track prediction accuracy and model performance
 
-### DevOps & Deployment
-- **Docker Compose**: Complete containerized deployment
-- **Nginx**: Reverse proxy and load balancing
-- **Prometheus + Grafana**: Monitoring and alerting
-- **CI/CD Ready**: GitHub Actions workflows
-- **Health Checks**: Comprehensive system monitoring
+## Technology Stack
 
-## 🏗️ Architecture
+- **Backend**: FastAPI (Python) with async support
+- **Frontend**: React with TypeScript
+- **Machine Learning**: XGBoost for classification
+- **Database**: PostgreSQL for data storage
+- **Caching**: Redis for improved performance
+- **Deployment**: Docker containers with docker-compose
+- **Monitoring**: Prometheus and Grafana
 
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   React Frontend │────│   Nginx Proxy   │────│  FastAPI Backend │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-                                                        │
-                       ┌─────────────────┐             │
-                       │   PostgreSQL    │─────────────┤
-                       └─────────────────┘             │
-                                                        │
-                       ┌─────────────────┐             │
-                       │     Redis       │─────────────┤
-                       └─────────────────┘             │
-                                                        │
-                       ┌─────────────────┐             │
-                       │    MLflow       │─────────────┘
-                       └─────────────────┘
-```
-
-## 🚀 Quick Start
+## Getting Started
 
 ### Prerequisites
+
 - Docker and Docker Compose
 - Git
 
 ### Installation
 
-1. **Clone the repository**
+1. Clone the repository:
 ```bash
 git clone <repository-url>
 cd accident-prediction-system
 ```
 
-2. **Start the application**
+2. Add your dataset:
+   - Place `road_accident_dataset.csv` in the project root
+   - The system will automatically load and process the data
+
+3. Start the application:
 ```bash
-docker-compose up -d
+# Windows
+deploy.bat
+
+# Linux/Mac
+./deploy.sh
 ```
 
-3. **Access the application**
-- Frontend: http://localhost:3000
-- API Documentation: http://localhost:8000/docs
-- MLflow UI: http://localhost:5000
-- Grafana Dashboard: http://localhost:3001 (admin/admin)
+4. Access the application:
+   - Web Interface: http://localhost:3000
+   - API Documentation: http://localhost:8000/docs
+   - MLflow Tracking: http://localhost:5000
+   - Monitoring Dashboard: http://localhost:3001
 
-### Development Setup
+## Usage
 
-1. **Backend Development**
+### Making Predictions
+
+The system requires the following input parameters:
+
+- **Location & Time**: Country, month, day of week, time of day
+- **Road Conditions**: Urban/rural, road type, surface condition, speed limit
+- **Weather**: Conditions, visibility level
+- **Vehicle Info**: Number of vehicles, vehicle condition
+- **Driver Info**: Age group, gender, alcohol level, fatigue status
+- **Other Factors**: Pedestrians/cyclists involved, traffic volume, population density
+
+### API Usage
+
+```bash
+# Single prediction
+curl -X POST "http://localhost:8000/api/v1/predict" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "country": "USA",
+    "weather_conditions": "Clear",
+    "road_type": "Highway",
+    "speed_limit": 65,
+    ...
+  }'
+
+# Batch predictions
+curl -X POST "http://localhost:8000/api/v1/predict/batch" \
+  -H "Content-Type: application/json" \
+  -d '{"predictions": [...]}'
+```
+
+## Development
+
+### Backend Development
+
 ```bash
 cd backend
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-2. **Frontend Development**
+### Frontend Development
+
 ```bash
 cd frontend
 npm install
 npm start
 ```
 
-## 📊 Key Improvements Over Original R Shiny App
+### Environment Configuration
 
-### 1. **Modern Technology Stack**
-- **Original**: R Shiny (single-threaded, limited scalability)
-- **Enhanced**: FastAPI + React (async, highly scalable, modern)
-
-### 2. **User Experience**
-- **Original**: Basic Shiny UI with limited interactivity
-- **Enhanced**: Modern React UI with real-time updates, responsive design
-
-### 3. **Performance**
-- **Original**: Synchronous processing, limited concurrent users
-- **Enhanced**: Async processing, WebSocket support, caching, load balancing
-
-### 4. **Deployment & Scalability**
-- **Original**: Single R process, difficult to scale
-- **Enhanced**: Containerized microservices, horizontal scaling, load balancing
-
-### 5. **Monitoring & Observability**
-- **Original**: Basic logging
-- **Enhanced**: Comprehensive monitoring with Prometheus, Grafana, structured logging
-
-### 6. **API & Integration**
-- **Original**: Limited API capabilities
-- **Enhanced**: RESTful API with OpenAPI docs, WebSocket support, batch processing
-
-## 🔧 Configuration
-
-### Environment Variables
-
-Create a `.env` file in the backend directory:
+Create `backend/.env`:
 
 ```env
-# Database
 DATABASE_URL=postgresql://postgres:password@localhost:5432/accident_prediction
-
-# Redis
 REDIS_URL=redis://localhost:6379
-
-# Security
-SECRET_KEY=your-secret-key-here
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-
-# External APIs
-WEATHER_API_KEY=your-weather-api-key
-MAPS_API_KEY=your-maps-api-key
-
-# Email
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASSWORD=your-app-password
+SECRET_KEY=your-secret-key
+DEBUG=false
 ```
 
-## 📈 API Endpoints
+## Model Information
 
-### Prediction Endpoints
-- `POST /api/v1/predict` - Single prediction
-- `POST /api/v1/predict/batch` - Batch predictions
-- `WebSocket /ws/predictions` - Real-time predictions
+The prediction model uses XGBoost classifier trained on historical accident data. Key features include:
 
-### Analytics Endpoints
-- `GET /api/v1/analytics/trends` - Accident trends
-- `GET /api/v1/analytics/risk-factors` - Risk factor analysis
-- `GET /api/v1/analytics/geographical` - Geographical analysis
+- **Accuracy**: Typically 85-90% on test data
+- **Classes**: Minor, Moderate, Severe
+- **Features**: 20+ input parameters
+- **Training**: Automated retraining when new data is available
 
-### Model Management
-- `GET /api/v1/model/performance` - Model metrics
-- `POST /api/v1/model/retrain` - Trigger retraining
+## Deployment
 
-### Data Exploration
-- `POST /api/v1/data/explore` - Feature exploration
-- `GET /api/v1/data/summary` - Dataset summary
-
-## 🧪 Testing
-
-### Backend Tests
+### Local Development
 ```bash
-cd backend
-pytest tests/ -v --cov=app
+docker-compose up -d
 ```
 
-### Frontend Tests
-```bash
-cd frontend
-npm test
-```
-
-### Integration Tests
-```bash
-docker-compose -f docker-compose.test.yml up --abort-on-container-exit
-```
-
-## 📦 Deployment
-
-### Production Deployment
-
-1. **Update environment variables** for production
-2. **Build and deploy**:
+### Production
 ```bash
 docker-compose -f docker-compose.prod.yml up -d
 ```
 
-### Cloud Deployment (AWS/GCP/Azure)
-- Use provided Terraform configurations in `/deployment`
-- Configure CI/CD pipelines with GitHub Actions
-- Set up monitoring and alerting
+The system includes health checks, logging, and monitoring for production use.
 
-## 🔒 Security Features
-
-- JWT authentication and authorization
-- Rate limiting and request validation
-- CORS protection
-- SQL injection prevention
-- Input sanitization and validation
-- HTTPS enforcement in production
-
-## 📊 Monitoring & Observability
-
-### Metrics Tracked
-- API response times and error rates
-- Model prediction accuracy and drift
-- System resource usage
-- User activity and engagement
-
-### Alerts
-- Model performance degradation
-- System health issues
-- High error rates
-- Resource exhaustion
-
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch
+3. Make your changes
+4. Add tests if applicable
+5. Submit a pull request
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see LICENSE file for details.
 
-## 🙏 Acknowledgments
+## Support
 
-- Original R Shiny implementation for inspiration
-- XGBoost team for the excellent ML library
-- FastAPI and React communities for amazing frameworks
-- Open source contributors and maintainers
-
-## 📞 Support
-
-For support and questions:
-- Create an issue on GitHub
-- Check the documentation at `/docs`
-- Review API documentation at `/api/v1/docs`
-
----
-
-**Built with ❤️ for safer roads and better predictions**
+- Check the API documentation at `/docs`
+- Review logs in `backend/logs/`
+- Monitor system health at `/health`
