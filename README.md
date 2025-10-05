@@ -1,165 +1,121 @@
-# Accident Severity Prediction System
+# 🚗 Accident Severity Prediction System
 
-A machine learning system that predicts the severity of road accidents using various environmental and situational factors. Originally built with R Shiny, now modernized with FastAPI and React for better performance and scalability.
+ML-powered system that predicts road accident severity (Minor/Moderate/Severe) using environmental and situational factors. Modernized from R Shiny to FastAPI + React for better performance.
 
-## Overview
+## ✨ Features
 
-This system analyzes multiple factors including weather conditions, road type, driver characteristics, and vehicle information to predict whether an accident will be Minor, Moderate, or Severe. The prediction model uses XGBoost algorithm trained on historical accident data.
+- 🌐 **Web Interface** - Clean, responsive UI for predictions
+- 🔌 **REST API** - Programmatic access with auto-documentation  
+- ⚡ **Real-time** - Instant predictions via WebSocket
+- 📊 **Analytics** - Visualize trends and patterns
+- 🔄 **Batch Processing** - Handle multiple predictions
+- 📈 **Monitoring** - Track model performance
 
-## Features
+## 🛠️ Tech Stack
 
-- **Web Interface**: Clean, responsive interface for making predictions
-- **REST API**: Programmatic access for integration with other systems
-- **Real-time Predictions**: Instant results via WebSocket connections
-- **Batch Processing**: Handle multiple predictions at once
-- **Analytics Dashboard**: Visualize trends and patterns in accident data
-- **Model Monitoring**: Track prediction accuracy and model performance
+| Component | Technology |
+|-----------|------------|
+| Backend | FastAPI (Python) |
+| Frontend | React + TypeScript |
+| ML Model | XGBoost |
+| Database | PostgreSQL |
+| Cache | Redis |
+| Deploy | Docker Compose |
 
-## Technology Stack
+## 🚀 Quick Start
 
-- **Backend**: FastAPI (Python) with async support
-- **Frontend**: React with TypeScript
-- **Machine Learning**: XGBoost for classification
-- **Database**: PostgreSQL for data storage
-- **Caching**: Redis for improved performance
-- **Deployment**: Docker containers with docker-compose
-- **Monitoring**: Prometheus and Grafana
+**Prerequisites:** Docker, Docker Compose, Git
 
-## Getting Started
-
-### Prerequisites
-
-- Docker and Docker Compose
-- Git
-
-### Installation
-
-1. Clone the repository:
 ```bash
+# 1. Clone & setup
 git clone <repository-url>
 cd accident-prediction-system
+
+# 2. Add dataset (road_accident_dataset.csv to project root)
+
+# 3. Deploy
+./deploy.sh    # Linux/Mac
+deploy.bat     # Windows
 ```
 
-2. Add your dataset:
-   - Place `road_accident_dataset.csv` in the project root
-   - The system will automatically load and process the data
+**Access Points:**
+- 🌐 Web App: http://localhost:3000
+- 📚 API Docs: http://localhost:8000/docs  
+- 🔬 MLflow: http://localhost:5000
+- 📊 Grafana: http://localhost:3001
 
-3. Start the application:
-```bash
-# Windows
-deploy.bat
+## 📝 Usage
 
-# Linux/Mac
-./deploy.sh
-```
+**Input Parameters:**
+- 📍 Location & Time (country, month, day, time)
+- 🛣️ Road Conditions (type, surface, speed limit)
+- 🌤️ Weather (conditions, visibility)
+- 🚙 Vehicle Info (count, condition)
+- 👤 Driver Info (age, gender, alcohol, fatigue)
+- 🚶 Other Factors (pedestrians, cyclists, traffic)
 
-4. Access the application:
-   - Web Interface: http://localhost:3000
-   - API Documentation: http://localhost:8000/docs
-   - MLflow Tracking: http://localhost:5000
-   - Monitoring Dashboard: http://localhost:3001
-
-## Usage
-
-### Making Predictions
-
-The system requires the following input parameters:
-
-- **Location & Time**: Country, month, day of week, time of day
-- **Road Conditions**: Urban/rural, road type, surface condition, speed limit
-- **Weather**: Conditions, visibility level
-- **Vehicle Info**: Number of vehicles, vehicle condition
-- **Driver Info**: Age group, gender, alcohol level, fatigue status
-- **Other Factors**: Pedestrians/cyclists involved, traffic volume, population density
-
-### API Usage
-
+**API Examples:**
 ```bash
 # Single prediction
-curl -X POST "http://localhost:8000/api/v1/predict" \
+curl -X POST "localhost:8000/api/v1/predict" \
   -H "Content-Type: application/json" \
-  -d '{
-    "country": "USA",
-    "weather_conditions": "Clear",
-    "road_type": "Highway",
-    "speed_limit": 65,
-    ...
-  }'
+  -d '{"country": "USA", "weather_conditions": "Clear", ...}'
 
-# Batch predictions
-curl -X POST "http://localhost:8000/api/v1/predict/batch" \
-  -H "Content-Type: application/json" \
+# Batch predictions  
+curl -X POST "localhost:8000/api/v1/predict/batch" \
   -d '{"predictions": [...]}'
 ```
 
-## Development
+## 🔧 Development
 
-### Backend Development
-
+**Backend:**
 ```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+cd backend && python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate  
 pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-### Frontend Development
-
+**Frontend:**
 ```bash
-cd frontend
-npm install
-npm start
+cd frontend && npm install && npm start
 ```
 
-### Environment Configuration
-
-Create `backend/.env`:
-
+**Environment:** Create `backend/.env`
 ```env
 DATABASE_URL=postgresql://postgres:password@localhost:5432/accident_prediction
 REDIS_URL=redis://localhost:6379
 SECRET_KEY=your-secret-key
-DEBUG=false
 ```
 
-## Model Information
+## 🤖 Model Info
 
-The prediction model uses XGBoost classifier trained on historical accident data. Key features include:
+- **Algorithm:** XGBoost Classifier
+- **Accuracy:** 85-90% on test data
+- **Classes:** Minor, Moderate, Severe  
+- **Features:** 20+ parameters
+- **Training:** Automated retraining available
 
-- **Accuracy**: Typically 85-90% on test data
-- **Classes**: Minor, Moderate, Severe
-- **Features**: 20+ input parameters
-- **Training**: Automated retraining when new data is available
+## 🚢 Deployment
 
-## Deployment
-
-### Local Development
 ```bash
+# Local
 docker-compose up -d
-```
 
-### Production
-```bash
+# Production  
 docker-compose -f docker-compose.prod.yml up -d
 ```
 
-The system includes health checks, logging, and monitoring for production use.
+## 🤝 Contributing
 
-## Contributing
+1. Fork → Create branch → Make changes → Test → PR
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+## 📄 License
 
-## License
+MIT License
 
-MIT License - see LICENSE file for details.
+## 💬 Support
 
-## Support
-
-- Check the API documentation at `/docs`
-- Review logs in `backend/logs/`
-- Monitor system health at `/health`
+- 📖 API Docs: `/docs`
+- 📋 Logs: `backend/logs/`  
+- ❤️ Health: `/health`
