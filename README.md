@@ -1,6 +1,6 @@
 # 🚗 Accident Severity Prediction System
 
-ML-powered system that predicts road accident severity (Minor/Moderate/Severe) using environmental and situational factors. Modernized from R Shiny to FastAPI + React for better performance.
+ML-powered system that predicts road accident severity (Minor/Moderate/Severe) using environmental and situational factors. FastAPI + React for better performance.
 
 ## ✨ Features
 
